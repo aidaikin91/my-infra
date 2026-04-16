@@ -1,0 +1,97 @@
+name: Terraform
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/**'         # runs on PRs that change terraform code
+  push:
+    branches: [main]
+    paths:
+      - 'terraform/**'         # runs on merge to main
+
+env:
+  AWS_REGION: us-east-1
+  TF_WORKING_DIR: terraform/environments/dev
+
+jobs:
+
+  # ===== RUNS ON EVERY PR =====
+  plan:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -var="openweather_api_key=${{ secrets.OPENWEATHER_API_KEY }}" -no-color
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        # -no-color makes the output readable in PR comments
+
+      # Post the plan output as a PR comment
+      - name: Comment Plan on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const output = `#### Terraform Plan
+            \`\`\`
+            ${{ steps.plan.outputs.stdout }}
+            \`\`\`
+            *Triggered by @${{ github.actor }}*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+        # Now the reviewer can see exactly what infrastructure
+        # will change BEFORE approving the PR
+
+
+  # ===== RUNS ONLY AFTER MERGE TO MAIN =====
+  apply:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var="openweather_api_key=${{ secrets.OPENWEATHER_API_KEY }}"
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        # -auto-approve means don't ask for confirmation
+        # It's safe because the PR was already reviewed
