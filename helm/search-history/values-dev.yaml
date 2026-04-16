@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: REPLACE_WITH_YOUR_ECR_URL/search-history
-  tag: latest
+  repository: 060623762260.dkr.ecr.us-east-1.amazonaws.com/search-history
+  tag: v1
 
 resources:
   requests:

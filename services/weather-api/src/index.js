@@ -38,7 +38,7 @@ async function initDb() {
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'weather-api' });
+  res.json({ status: 'ok', service: 'weather-api', version: 'v2' });
 });
 
 // Get weather for a city

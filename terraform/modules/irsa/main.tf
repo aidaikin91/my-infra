@@ -6,7 +6,7 @@ resource "aws_iam_role" "this" {
         Statement = [{
             Effect = "Allow"
             Principal = {
-                Federated = var.oidc.provider_arn
+                Federated = var.oidc_provider_arn
             }
             Action = "sts:AssumeRoleWithWebIdentity"
             Condition = {

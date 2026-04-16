@@ -14,10 +14,10 @@ module "eks" {
   # Karpenter will handle the rest
   eks_managed_node_groups = {
     initial = {
-        instance_types = ["t3.small"]
+        instance_types = ["t3.medium"]
         min_size = 1
         max_size = 2
-        desired_size = 1
+        desired_size = 2
     
    # Use spot instances to save money
    capacity_type = "SPOT"
