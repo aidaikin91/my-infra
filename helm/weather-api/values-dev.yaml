@@ -1,0 +1,18 @@
+replicaCount: 1
+image:
+  repository: REPLACE_WITH_YOUR_ECR_URL/weather-api
+  tag: latest
+resources:
+  requests:
+    cpu: 100m        
+    memory: 128Mi    
+  limits:
+    cpu: 250m       
+    memory: 256Mi    
+namespace: weather-api
+ingress:
+  host: weather.local
+env:
+  DB_SECRET_NAME: weather-api/db
+  OPENWEATHER_SECRET_NAME: weather-api/openweather
+  AWS_REGION: us-east-1

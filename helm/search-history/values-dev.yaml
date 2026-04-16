@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: REPLACE_WITH_YOUR_ECR_URL/search-history
+  tag: latest
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi
+
+namespace: search-history
+
+env:
+  DYNAMODB_TABLE: search-history
+  AWS_REGION: us-east-1
