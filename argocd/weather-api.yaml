@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: weather-api-dev
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/aidaikin91/my-infra
+    targetRevision: main
+    path: helm/weather-api
+    helm:
+      valueFiles:
+        - values-dev.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: weather-api
+
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=false
