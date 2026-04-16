@@ -3,7 +3,7 @@ name: Deploy Weather API
 # WHEN does this pipeline run?
 on:
   push:
-    branches: [main]          # only on merge to main
+    branches: [master]          # only on merge to master
     paths:
       - 'services/weather-api/**'   # only when weather-api code changes
       - 'helm/weather-api/**'       # or when its helm chart changes

@@ -5,9 +5,9 @@ on:
     paths:
       - 'terraform/**'         # runs on PRs that change terraform code
   push:
-    branches: [main]
+    branches: [master]
     paths:
-      - 'terraform/**'         # runs on merge to main
+      - 'terraform/**'         # runs on merge to master
 
 env:
   AWS_REGION: us-east-1
@@ -66,10 +66,10 @@ jobs:
         # will change BEFORE approving the PR
 
 
-  # ===== RUNS ONLY AFTER MERGE TO MAIN =====
+  # ===== RUNS ONLY AFTER MERGE TO MASTER =====
   apply:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

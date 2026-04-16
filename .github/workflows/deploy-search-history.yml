@@ -2,7 +2,7 @@ name: Deploy Search History
 
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - 'services/search-history/**'
       - 'helm/search-history/**'
