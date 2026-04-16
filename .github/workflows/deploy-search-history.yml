@@ -6,6 +6,7 @@ on:
     paths:
       - 'services/search-history/**'
       - 'helm/search-history/**'
+  workflow_dispatch:
 
 env:
   AWS_REGION: us-east-1

@@ -8,6 +8,7 @@ on:
     branches: [master]
     paths:
       - 'terraform/**'         # runs on merge to master
+  workflow_dispatch:           # allow manual trigger from GitHub UI
 
 env:
   AWS_REGION: us-east-1
