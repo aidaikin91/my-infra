@@ -8,7 +8,7 @@ spec:
 
   source:
     repoURL: https://github.com/aidaikin91/my-infra
-    targetRevision: main
+    targetRevision: master
     path: helm/weather-api
     helm:
       valueFiles:
