@@ -18,8 +18,8 @@ jobs:
   # ===== JOB 1: RUN TESTS =====
   test:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'deploy:')"
     steps:
-      # Check out the code
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -42,8 +42,9 @@ jobs:
 
   # ===== JOB 2: BUILD AND PUSH =====
   build-and-push:
-    needs: test               # only runs if tests pass
+    needs: test               
     runs-on: ubuntu-latest
+    
     steps:
       # Check out the code
       - name: Checkout code
