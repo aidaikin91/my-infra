@@ -23,6 +23,9 @@ async function initDb() {
     user: creds.username,
     password: creds.password,
     database: creds.dbname,
+    ssl: {
+      rejectUnauthorized: false
+    }
   });
 
   // Create cache table if not exists
