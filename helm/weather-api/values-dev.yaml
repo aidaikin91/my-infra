@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: 060623762260.dkr.ecr.us-east-1.amazonaws.com/weather-api
-  tag: v2
+  tag: v3
 resources:
   requests:
     cpu: 100m        
