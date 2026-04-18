@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: 060623762260.dkr.ecr.us-east-1.amazonaws.com/search-history
-  tag: ffeb219
+  tag: edc04f1
 
 resources:
   requests:
